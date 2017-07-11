@@ -1,0 +1,232 @@
+/*
+ * Base structure
+ */
+
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+
+body {
+    padding-top: 50px;
+}
+
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+
+.navbar-fixed-top {
+    border: 0;
+}
+
+
+/*
+ * Sidebar
+ */
+
+
+/* Hide for mobile, show later */
+
+
+/*侧边栏的响应式*/
+
+.sidebar {
+    display: none;
+}
+
+@media (min-width: 992px) {
+    .sidebar {
+        position: fixed;
+        top: 51px;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        display: block;
+        padding: 20px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        /* Scrollable contents if viewport is shorter than content. */
+        background-color: #f5f5f5;
+        border-right: 1px solid #eee;
+    }
+}
+
+
+/* Sidebar navigation */
+
+.nav-sidebar {
+    margin-right: -21px;
+    /* 20px padding + 1px border */
+    margin-bottom: 20px;
+    margin-left: -20px;
+}
+
+.nav-sidebar>li>a {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.nav-sidebar>.active>a,
+.nav-sidebar>.active>a:hover,
+.nav-sidebar>.active>a:focus {
+    color: #fff;
+    background-color: #428bca;
+}
+
+
+/*
+ * Main content
+ */
+
+.main {
+    padding: 20px;
+}
+
+@media (min-width: 992px) {
+    .main {
+        padding-right: 40px;
+        padding-left: 40px;
+    }
+}
+
+.main .page-header {
+    margin-top: 0;
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.placeholders h4 {
+    margin-bottom: 0;
+}
+
+.placeholder {
+    margin-bottom: 20px;
+}
+
+.placeholder img {
+    display: inline-block;
+    border-radius: 50%;
+}
+
+#manager-icon {
+    padding-right: 4px
+}
+
+
+/*开始其他css组件的编写*/
+
+
+/*导航栏brand*/
+
+#brand {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+/*侧边栏*/
+
+#dashboard,
+#setting,
+#home,
+#out {
+    padding-top: 80%;
+    text-align: center;
+}
+
+#dashboard-span,
+#setting-span,
+#out-span,
+#home-span {
+    color: black;
+    font-size: 40px;
+    text-align: center;
+}
+
+.dashboard-text,
+.setting-text {
+    font-weight: bold;
+    color: black;
+}
+
+#container-1 {
+    padding: 5px;
+}
+
+#area-table {
+    padding-top: 10px;
+    height: auto;
+}
+
+
+/*.fixed-table-container{*/
+
+
+/*height: 800px;*/
+
+
+/*}*/
+
+
+/*表格下拉菜单*/
+
+.dropdown-menu {
+    width: 200px;
+}
+
+.modal-dialog {
+    width: auto;
+    padding-top: 80px;
+}
+
+.modal-header {
+    background-color: lightgray;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.modal-body {
+    height: auto;
+    padding: 0px !important;
+}
+.modal-body label,.modal-body div{
+    margin-bottom: 5px;
+    text-align: left !important;
+    text-indent: 30px;
+}
+
+/*弹出界面提交表单*/
+
+@media (max-width: 992px) {
+    #form {
+        height: auto;
+    }
+    .modal-dialog {
+        width: auto;
+        padding-top: 150px;
+    }
+}
+
+@media (min-width: 992px) {
+    #form {
+        height: 220px;
+    }
+}
