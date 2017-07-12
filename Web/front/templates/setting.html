@@ -41,7 +41,7 @@
     }
 
     .form-horizontal .has-feedback .form-control-feedback {
-        right: 8px;
+        right: 35px;
     }
 </style>
 
@@ -76,7 +76,7 @@
         <div class="col-md-1 sidebar">
             <ul class="nav nav-sidebar">
                 <div id="home" class="container-fluid">
-                    <a href="/">
+                    <a href="/main">
                         <li>
                             <span id="home-span" class="glyphicon glyphicon-home"></span>
                         </li>
@@ -135,10 +135,10 @@
                     <form class="form-horizontal" role="form" id="formAddDevice" method="post">
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label for="userName" class="col-md-4 control-label">用户名称 ：</label>
-                                <div class="col-md-6">
+                                <label for="userName" class="col-md-4 control-label" style="margin-top:10px;">用户名称 ：</label>
+                                <div class="col-md-6" style="margin-top:10px;">
                                     <input class="form-control modal-input" type="text" id="userName" name="username"
-                                           placeholder="请输入用户名称..."/>
+                                           placeholder="请输入2-12用户名..."/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -149,10 +149,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="firstLevelAlarmContact" class="col-md-4 control-label">一级报警联系方式 ：</label>
+                                <label for="firstLevelAlarmContact" class="col-md-4 control-label" >一级报警联系方式 ：</label>
                                 <div class="col-md-6">
-                                    <input class="form-control modal-input" type="text" id="firstLevelAlarmContact"
-                                           placeholder="请输入一级报警联系方式..."/>
+                                    <input name="firstLevelAlarmContact" class="form-control modal-input" type="text" id="firstLevelAlarmContact"
+                                           placeholder="请输入一级报警联系方式..." data-bv-notempty />
                                 </div>
                             </div>
                             <div class="form-group">
@@ -179,8 +179,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="facilityIdCode" class="col-md-4 control-label">设备ID ：</label>
-                                <div class="col-md-6">
+                                <label for="facilityIdCode" class="col-md-4 control-label" style="margin-top:10px;">设备ID ：</label>
+                                <div class="col-md-6" style="margin-top:10px">
                                     <input class="form-control modal-input" type="text" id="facilityIdCode"
                                            placeholder="请输入设备ID..."/>
                                 </div>
@@ -188,7 +188,7 @@
                             <div class="form-group">
                                 <label for="installTime" class="col-md-4 control-label">安装时间 ：</label>
                                 <div class="col-md-6">
-                                    <input class="form_datetime form-control modal-input" type="text" value="" size="16"
+                                    <input class="form_datetime form-control modal-input" type="text" name="installTime" value="" size="16"
                                            id="installTime" placeholder="点击设置安装时间">
                                 </div>
                             </div>
@@ -276,7 +276,7 @@
     //为地图注册click事件获取鼠标点击出的经纬度坐标
     var clickEventListener = map.on('click', function (e) {
         var position = document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat();
-        $('#coordinate').val(position);
+        $('#coordinate').val($.trim(position));
 
     });
     var auto = new AMap.Autocomplete({
@@ -305,6 +305,11 @@
                         notEmpty: {
                             message: '用户名不能为空'
                         },
+                        stringLength: {
+                            min: 2,
+                            max: 12,
+                            message: '请输入2-12位的用户名'
+                        },
                     }
                 },
                 coordinate: {
@@ -312,6 +317,16 @@
                         notEmpty: {
                             message: '坐标不能为空'
                         },
+                    }
+                },
+                installTime: {
+                    validators: {
+                        notEmpty: {
+                            message: '时间不能为空'
+                        },
+                        date: {
+                        format: 'YYYY-DD-MM'
+                        }
                     }
                 }
             }
@@ -321,7 +336,7 @@
                 e.preventDefault();
                 submit_data();
                 $("#formAddDevice")[0].reset();
-                window.location.reload();
+                $("#formAddDevice").data('bootstrapValidator').resetForm(); 
             });
     });
 </script>
