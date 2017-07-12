@@ -3,12 +3,14 @@ var userList = [];
 var firstUser;
 var positionMarkList = [];
 var map;//统一的地图全局变量
+var beginTime = getMidnight();
+var endTime = getNowFormatDate();
 
 $(function () {
     //选择器->地图->【图表->统计表盘，受时间选择约束】
     selectInit();
     //【下一版程序，报警，受选择器和时间选择约束】
-    alertInit();
+    alarmtInit();
 });
 
 //选择器内容出现变化
@@ -20,8 +22,17 @@ function selectChange() {
             break;
         }
     }
-    plotData(selectUserName);
-    statistic(selectUserName);
+    plotData(selectUserName, beginTime, endTime);
+    statistic(selectUserName, beginTime, endTime);
+}
+
+function timeSubmit() {
+    //改写了全局变量数值
+    beginTime = $("#timeBegin").val() + ':00';
+    endTime = $("#timeEnd").val() + ':00';
+    var selectUserName = $(".selectpicker").val();
+    plotData(selectUserName, beginTime, endTime);
+    statistic(selectUserName, beginTime, endTime);
 }
 
 //选择器初始化，查询所有用户记录
@@ -51,7 +62,7 @@ function selectInit() {
     });
 }
 
-function selectPickerInit(userNameList) {
+function selectPickerInit(userNameList, beginTime, endTime) {
     for (var i = 0; i < userNameList.length; i++) {
         if (i === 0) {
             //默认选中第一个用户
@@ -66,8 +77,6 @@ function selectPickerInit(userNameList) {
 }
 //依据用户选择器的用户名选择得到设备Id的list
 function plotData(selectUserName) {
-    var beginTime = arguments[1] ? arguments[1] : getMidnight();
-    var endTime = arguments[2] ? arguments[2] : getNowFormatDate();
     var sendData = {"userName": selectUserName, "beginTime": beginTime, "endTime": endTime};
     $.ajax({
         type: "GET",
@@ -228,7 +237,7 @@ function chartInit(series) {
     $('#chart').highcharts(json);
 }
 //报警栏初始化
-function alertInit() {
+function alarmtInit() {
     var beginTime = arguments[0] ? arguments[0] : 0;
     var endTime = arguments[1] ? arguments[1] : 0;
     $body = $("#alertTableBody");
@@ -309,9 +318,7 @@ function gaodemap(center, positionMarkList) {
     });
 }
 
-function statistic(userName) {
-    var beginTime = arguments[1] ? arguments[1] : getMidnight();
-    var endTime = arguments[2] ? arguments[2] : getNowFormatDate();
+function statistic(userName, beginTime, endTime) {
     var sendData = {
         "userName": userName,
         "beginTime": beginTime,
