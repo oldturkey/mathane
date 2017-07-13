@@ -34,6 +34,15 @@
         .highcharts-reset-zoom {
             transform: translate(762px, 0);
         }
+
+        table tr td {
+            text-align: center;
+        }
+
+        .navbar-inverse {
+            background-color: #3f4146;
+        }
+
     </style>
 </head>
 
@@ -55,13 +64,13 @@
         <div id="navbar" class="navbar-collapse collapse">
             <div class="nav navbar-right">
                 <label class="navbar-text">欢迎[管理员]</label>
-                <label class="navbar-text">帮助</label>
             </div>
             <div class="navbar-form navbar-right">
                 <div class="form-group">
                     <input id="timeBegin" type="text" placeholder="开始时间" class="form_datetime form-control">
                     <input id="timeEnd" type="text" placeholder="结束时间" class="form_datetime form-control">
-                    <button type="submit" class="btn btn-default glyphicon glyphicon-search" onclick="timeSubmit()"></button>
+                    <button type="submit" class="btn btn-default glyphicon glyphicon-search"
+                            onclick="timeSubmit()"></button>
                 </div>
             </div>
             <div class="navbar-form navbar-right">
@@ -76,7 +85,7 @@
         <div class="col-md-1 sidebar">
             <ul class="nav nav-sidebar">
                 <div id="home" class="container-fluid">
-                    <a href="/">
+                    <a href="/main">
                         <li>
                             <span id="home-span" class="glyphicon glyphicon-home"></span>
                         </li>
@@ -121,11 +130,12 @@
                         <div id="alert-body" class="table-responsive">
                             <table id="alertTable" class="table table-bordered table-hover">
                                 <thead>
-                                <tr class="danger">
+                                <tr style="background: rgb(129, 138, 152);color: #fff;">
                                     <td>本地时间</td>
                                     <td>用户名称</td>
                                     <td>设备编号</td>
                                     <td>沼气浓度</td>
+                                    <td>报警等级</td>
                                 </tr>
                                 </thead>
                                 <tbody id="alertTableBody">
@@ -149,7 +159,7 @@
                         <div class="white-panel pn donut-chart">
                             <div class="white-header">
                                 <h5 class="pane-text-head">沼气最低浓度：</h5>
-                                <p id="min" class="pane-low sta">35%</p>
+                                <p id="min" class="pane-low sta">00%</p>
                             </div>
                         </div>
                         <!-- --/grey-panel ---->
@@ -158,7 +168,7 @@
                         <div class="white-panel pn donut-chart">
                             <div class="white-header">
                                 <h5 class="pane-text-head">沼气最高浓度：</h5>
-                                <p id="max" class="pane-high sta">55%</p>
+                                <p id="max" class="pane-high sta">00%</p>
                             </div>
                         </div>
                         <!-- --/grey-panel ---->
@@ -167,7 +177,7 @@
                         <div class="white-panel pn donut-chart">
                             <div class="white-header">
                                 <h5 class="pane-text-head">沼气平均浓度：</h5>
-                                <p id="average" class="pane-Aver sta">40%</p>
+                                <p id="average" class="pane-Aver sta">00%</p>
                             </div>
 
                         </div>
@@ -190,7 +200,10 @@
         startView: 2, //月视图
         minView: 1 //日期时间选择器所能够提供的最精确的时间选择视图
     });
-
+    $(function () {
+        $("#timeBegin").val(getMidnight());
+        $("#timeEnd").val(getNowFormatDate());
+    });
 </script>
 </body>
 

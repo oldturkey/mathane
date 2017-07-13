@@ -5,20 +5,28 @@
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 
-body {
-    padding-top: 50px;
-}
-
 
 /*
- * Global add-ons
- */
-
+ * Global add-ons*/
+body {
+    background: #f5f5f5;
+}
+.h5, h5 {
+    font-size: 15px;
+}
 .sub-header {
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
 }
-
+.table>tbody>tr.info1>td{
+    background: #fef0ef;
+}
+.table>tbody>tr.warning1>td{
+    background: #fabeb9;
+}
+.table>tbody>tr.danger1>td{
+    background: #f46e65;
+}
 
 /*
  * Top navigation
@@ -148,7 +156,7 @@ body {
 #setting,
 #home,
 #out {
-    padding-top: 80%;
+    padding-top: 50%;
     text-align: center;
 }
 
@@ -156,7 +164,7 @@ body {
 #setting-span,
 #out-span,
 #home-span {
-    color: black;
+    color: #333;
     font-size: 40px;
     text-align: center;
 }
@@ -167,66 +175,128 @@ body {
     color: black;
 }
 
+
+/*所有容器*/
+
+.container-fluid,
+.row,
+#container-1,
+#container-2,
+.panel {
+    height: 100%;
+}
+
+#gaodemap, #alert-space {
+    height: 47%;
+    padding-top: 5px;
+}
+
+.panel {
+    margin-bottom: 0px;
+}
+
+#alert-header {
+    line-height: 32px;
+    height: 8%;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    background-color: #d73435;
+    letter-spacing: 15px;
+}
+
+#panel-body-table {
+    height: 94%;
+}
+
+#alert-body {
+    height: 100%;
+    padding: 0px;
+}
+
+
+/*容器*/
+
 #container-1 {
-    padding: 5px;
+    padding: 2px;
+    padding-top: 51px;
 }
 
-#area-table {
-    padding-top: 10px;
-    height: auto;
+#container-2 {
+    padding: 2px;
 }
 
-
-/*.fixed-table-container{*/
-
-
-/*height: 800px;*/
-
-
-/*}*/
-
-
-/*表格下拉菜单*/
-
-.dropdown-menu {
-    width: 200px;
-}
-
-.modal-dialog {
+#chart {
+    height: 80%;
     width: auto;
-    padding-top: 80px;
+    padding-top: 50px;
 }
 
-.modal-header {
-    background-color: lightgray;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+#pane {
+    height: 50%;
 }
 
-.modal-body {
+#pane-1,
+#pane-2,
+#pane-3 {
+    height: 50%;
+    border: 2px solid;
+}
+
+.pane-text-head {
+    text-align: center;
+    color: #fff;
+}
+
+.pane-text-body {
+    color: black;
+    text-align: center;
+    font-size: 16px;
+}
+
+.panel-body {
+    height: 100%;
+    padding: 2px;
+}
+
+#timeBegin,
+#timeEnd {
+    width: 38%;
+}
+
+.white-panel {
+    text-align: center;
+    background: rgb(255, 255, 255);
+    color: rgb(204, 209, 217);
+}
+
+.pn {
     height: auto;
-    padding: 0px !important;
-}
-.modal-body label,.modal-body div{
-    margin-bottom: 5px;
-    text-align: left !important;
-    text-indent: 30px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px;
 }
 
-/*弹出界面提交表单*/
-
-@media (max-width: 992px) {
-    #form {
-        height: auto;
-    }
-    .modal-dialog {
-        width: auto;
-        padding-top: 150px;
-    }
+.mt .white-panel .white-header {
+    background: rgb(129, 138, 152);
+    padding: 3px;
+    margin-bottom: 15px;
+    color: rgb(255, 255, 255);
 }
 
-@media (min-width: 992px) {
-    #form {
-        height: 220px;
-    }
+.mt .white-panel .row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.mb {
+    margin-bottom: 25px;
+}
+
+.mt {
+    margin-top: 45px;
+}
+
+.mt .mb p {
+    font-size: 23px;
+    font-weight: bold;
 }

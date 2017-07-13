@@ -5,6 +5,10 @@
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 
+body {
+    padding-top: 50px;
+}
+
 
 /*
  * Global add-ons
@@ -144,7 +148,7 @@
 #setting,
 #home,
 #out {
-    padding-top: 80%;
+    padding-top: 50%;
     text-align: center;
 }
 
@@ -163,125 +167,66 @@
     color: black;
 }
 
-
-/*所有容器*/
-
-.container-fluid,
-.row,
-#container-1,
-#container-2,
-.panel {
-    height: 100%;
-}
-
-#gaodemap,
-#alert-space {
-    height: 50%;
-}
-
-.panel {
-    margin-bottom: 0px;
-}
-
-#alert-header {
-    height: 6%;
-    font-size: 100%;
-    text-align: center;
-    color: white;
-    background-color: #a94442;
-}
-
-#panel-body-table {
-    height: 94%;
-}
-
-#alert-body {
-    height: 100%;
-    padding: 0px;
-}
-
-
-/*容器*/
-
 #container-1 {
-    padding: 2px;
-    padding-top: 51px;
+    padding: 5px;
 }
 
-#container-2 {
-    padding: 2px;
-}
-
-#chart {
-    height: 80%;
-    width: auto;
-    padding-top: 50px;
-}
-
-#pane {
-    height: 50%;
-}
-
-#pane-1,
-#pane-2,
-#pane-3 {
-    height: 50%;
-    border: 2px solid;
-}
-
-.pane-text-head {
-    text-align: center;
-    color: #fff;
-}
-
-.pane-text-body {
-    color: black;
-    text-align: center;
-    font-size: 16px;
-}
-
-.panel-body {
-    height: 100%;
-    padding: 2px;
-}
-
-#timeBegin,
-#timeEnd {
-    width: 38%;
-}
-
-.white-panel {
-    text-align: center;
-    background: rgb(255, 255, 255);
-    color: rgb(204, 209, 217);
-}
-
-.pn {
+#area-table {
+    padding-top: 10px;
     height: auto;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px;
 }
 
-.mt .white-panel .white-header {
-    background: rgb(250, 139, 96);
-    padding: 3px;
-    margin-bottom: 15px;
-    color: rgb(255, 255, 255);
+
+/*.fixed-table-container{*/
+
+
+/*height: 800px;*/
+
+
+/*}*/
+
+
+/*表格下拉菜单*/
+
+.dropdown-menu {
+    width: 200px;
 }
 
-.mt .white-panel .row {
-    margin-right: -15px;
-    margin-left: -15px;
+.modal-dialog {
+    width: auto;
+    padding-top: 80px;
 }
 
-.mb {
-    margin-bottom: 25px;
+.modal-header {
+    background-color: lightgray;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 }
 
-.mt {
-    margin-top: 45px;
+.modal-body {
+    height: auto;
+    padding: 0px !important;
+}
+.modal-body label,.modal-body div{
+    margin-bottom: 5px;
+    text-align: center !important;
+    text-indent: 30px;
 }
 
-.mt .mb p {
-    font-size: 16px;
-    font-weight: bold;
+/*弹出界面提交表单*/
+
+@media (max-width: 992px) {
+    #form {
+        height: auto;
+    }
+    .modal-dialog {
+        width: auto;
+        padding-top: 150px;
+    }
+}
+
+@media (min-width: 992px) {
+    #form {
+        height: 220px;
+    }
 }

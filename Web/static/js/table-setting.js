@@ -195,4 +195,5 @@ function submit_data() {
 
 function clean() {
     $(".modal-input").val("");
+    $("#formAddDevice").data('bootstrapValidator').resetForm();
 }

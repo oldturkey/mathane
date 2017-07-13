@@ -58,25 +58,24 @@ def give():
                    {"concentration": 0.36, "time": "2017-06-30 19:28:47"}],
           "facilityIdCode": "1057",
           "location": "zjg",
-          "firstAlarm": 0.3,
-          "secondAlarm": 0.5,
-          "thirdAlarm": 0.7
+          "firstAlarm": 1,
+          "secondAlarm": 2,
+          "thirdAlarm": 3
           },
          {"data": [{"concentration": 0.21, "time": "2017-06-30 10:08:31"},
                    {"concentration": 0.35, "time": "2017-06-30 19:29:23"}],
           "facilityIdCode": "1059",
           "location": "yq",
-          "firstAlarm": 0.3,
-          "secondAlarm": 0.5,
-          "thirdAlarm": 0.7
+          "firstAlarm": 1,
+          "secondAlarm": 2,
+          "thirdAlarm": 3
           },
          {"data": [{"concentration": 0.22, "time": "2017-06-30 10:08:31"},
                    {"concentration": 0.21, "time": "2017-06-30 19:28:57"}],
           "facilityIdCode": "2014",
-          "location": "hjc",
-          "firstAlarm": 0.3,
-          "secondAlarm": 0.5,
-          "thirdAlarm": 0.7
+          "firstAlarm": 1,
+          "secondAlarm": 2,
+          "thirdAlarm": 3
           }]
     return json.dumps(a)
 
@@ -117,9 +116,37 @@ def delete():
 
 @app.route('/methane/display/query/alarm', methods=['GET'])
 def alert():
-    a = [{"concentration": 12, "facilityIdCode": "1057", "id": 1, "time": "2017-06-21 22:05:00.0", "userName": "user1"},
-         {"concentration": 13, "facilityIdCode": "1057", "id": 2, "time": "2017-06-27 10:06:45.0", "userName": "user1"},
-         {"concentration": 14, "facilityIdCode": "1057", "id": 3, "time": "2017-06-27 10:06:55.0", "userName": "user1"}]
+    a = [{"concentration": 12, "facilityIdCode": "1057", "id": 1, "time": "2017-06-21 22:05:00.0", "userName": "user1",
+          "alarmLevel": 1},
+         {"concentration": 13, "facilityIdCode": "1057", "id": 2, "time": "2017-06-27 10:06:45.0", "userName": "user1",
+          "alarmLevel": 1},
+         {"concentration": 14, "facilityIdCode": "1057", "id": 3, "time": "2017-06-27 10:06:55.0", "userName": "user1",
+          "alarmLevel": 2},
+         {"concentration": 12, "facilityIdCode": "1057", "id": 1, "time": "2017-06-21 22:05:00.0", "userName": "user1",
+          "alarmLevel": 1},
+         {"concentration": 13, "facilityIdCode": "1057", "id": 2, "time": "2017-06-27 10:06:45.0", "userName": "user1",
+          "alarmLevel": 1},
+         {"concentration": 14, "facilityIdCode": "1057", "id": 3, "time": "2017-06-27 10:06:55.0", "userName": "user1",
+          "alarmLevel": 2},
+         {"concentration": 12, "facilityIdCode": "1057", "id": 1, "time": "2017-06-21 22:05:00.0", "userName": "user1",
+          "alarmLevel": 1},
+         {"concentration": 13, "facilityIdCode": "1057", "id": 2, "time": "2017-06-27 10:06:45.0", "userName": "user1",
+          "alarmLevel": 1},
+         {"concentration": 14, "facilityIdCode": "1057", "id": 3, "time": "2017-06-27 10:06:55.0", "userName": "user1",
+          "alarmLevel": 2},
+         {"concentration": 12, "facilityIdCode": "1057", "id": 1, "time": "2017-06-21 22:05:00.0", "userName": "user1",
+          "alarmLevel": 3},
+         {"concentration": 13, "facilityIdCode": "1057", "id": 2, "time": "2017-06-27 10:06:45.0", "userName": "user1",
+          "alarmLevel": 2},
+         {"concentration": 14, "facilityIdCode": "1057", "id": 3, "time": "2017-06-27 10:06:55.0", "userName": "user1",
+          "alarmLevel": 3},
+         {"concentration": 12, "facilityIdCode": "1057", "id": 1, "time": "2017-06-21 22:05:00.0", "userName": "user1",
+          "alarmLevel": 2},
+         {"concentration": 13, "facilityIdCode": "1057", "id": 2, "time": "2017-06-27 10:06:45.0", "userName": "user1",
+          "alarmLevel": 1},
+         {"concentration": 14, "facilityIdCode": "1057", "id": 3, "time": "2017-06-27 10:06:55.0", "userName": "user1",
+          "alarmLevel": 1}
+         ]
     return json.dumps(a)
 
 

@@ -10,7 +10,6 @@ $(function () {
     //选择器->地图->【图表->统计表盘，受时间选择约束】
     selectInit();
     //【下一版程序，报警，受选择器和时间选择约束】
-    alarmtInit();
 });
 
 //选择器内容出现变化
@@ -24,6 +23,7 @@ function selectChange() {
     }
     plotData(selectUserName, beginTime, endTime);
     statistic(selectUserName, beginTime, endTime);
+    alarmtInit(selectUserName, beginTime, endTime);
 }
 
 function timeSubmit() {
@@ -33,8 +33,8 @@ function timeSubmit() {
     var selectUserName = $(".selectpicker").val();
     plotData(selectUserName, beginTime, endTime);
     statistic(selectUserName, beginTime, endTime);
+    alarmInit(selectUserName, beginTime, endTime);
 }
-
 //选择器初始化，查询所有用户记录
 function selectInit() {
     $.ajax({
@@ -50,6 +50,7 @@ function selectInit() {
             firstUser = userList[0];
             plotData(firstUser);
             statistic(firstUser);
+            alarmtInit(firstUser);
             var center = jsonList[0]["position"][0];
             for (i = 0; i < jsonList.length; i++) {
                 positionMarkList.push(jsonList[i]["position"]);
@@ -129,14 +130,13 @@ function chartInit(series) {
     var title = {
         text: '沼气浓度变化'
     };
-    var subtitle = {
-        text: '杭州钛比科技'
-    };
+
     var xAxis = {
         type: "datetime"
     };
     var yAxis = {
         minRange: alarmValue["thirdAlarm"],
+        min: 0,//必须要加，不然三级报警线在较大的时候显示不出来
         title: {
             text: '沼气浓度 (%)'
         },
@@ -150,11 +150,11 @@ function chartInit(series) {
             {
                 value: alarmValue["firstAlarm"],
                 width: 2,
-                color: 'blue',
+                color: '#f79992',
                 dashStyle: 'solid',
                 label: {
                     align: 'right',
-                    style: {color: 'blue', fontWeight: 'bold'},
+                    style: {color: '#f79992', fontWeight: 'bold'},
                     text: '一级报警界限'
                 }
 
@@ -162,22 +162,22 @@ function chartInit(series) {
             {
                 value: alarmValue["secondAlarm"],
                 width: 2,
-                color: 'pink',
+                color: '#f46e65',
                 dashStyle: 'solid',
                 label: {
                     align: 'right',
-                    style: {color: 'pink', fontWeight: 'bold'},
+                    style: {color: '#f46e65', fontWeight: 'bold'},
                     text: '二级报警界限'
                 }
             },
             {
                 value: alarmValue["thirdAlarm"],
                 width: 2,
-                color: 'red',
+                color: '#f04134',
                 dashStyle: 'solid',
                 label: {
                     align: 'right',
-                    style: {color: 'red', fontWeight: 'bold'},
+                    style: {color: '#f04134', fontWeight: 'bold'},
                     text: '三级报警界限'
                 }
             }
@@ -185,10 +185,11 @@ function chartInit(series) {
 
     };
     var credits = {
-        text: 'terabits.cn',
-        href: 'http://www.terabits.cn'
+      enabled: false
     };
+
     var chart = {
+        backgroundColor:'#f5f5f5',
         type: 'line',
         zoomType: 'x',
         resetZoomButton: {
@@ -224,20 +225,20 @@ function chartInit(series) {
 
     var alertSeries = [{}];
     json.title = title;
-    json.subtitle = subtitle;
     json.xAxis = xAxis;
     json.yAxis = yAxis;
     json.tooltip = tooltip;
     json.chart = chart;
     json.legend = legend;
-    json.series = series;
     json.credits = credits;
+    json.series = series;
     json.plotOptions = plotOptions;
 
     $('#chart').highcharts(json);
 }
 //报警栏初始化
-function alarmtInit() {
+function alarmInit(userName,beginTime,endTime) {
+    var userName = userName;
     var beginTime = arguments[0] ? arguments[0] : 0;
     var endTime = arguments[1] ? arguments[1] : 0;
     $body = $("#alertTableBody");
@@ -245,16 +246,26 @@ function alarmtInit() {
         type: "GET",
         url: "/methane/display/query/alarm",
         dataType: "json",
-        data: {"beginTime": beginTime, "endTime": endTime},
+        data: {"userName": userName, "beginTime": beginTime, "endTime": endTime},
         success: function (alertList) {
+            var str = "";
+            var trClass = '';
+
             for (var i = 0; i < alertList.length; i++) {
-                $body.append("<tr>");
-                $body.append("<td>" + alertList[i]["time"].substring(0, 19) + "</td>>");
-                $body.append("<td>" + alertList[i]["userName"] + "</td>>");
-                $body.append("<td>" + alertList[i]["facilityIdCode"] + "</td>>");
-                $body.append("<td>" + alertList[i]["concentration"] + "</td>>");
-                $body.append("</tr>");
+                switch (alertList[i]["alarmLevel"]){
+                    case 1:{trClass='info1';} break;
+                    case 2:{trClass='warning1';} break;
+                    case 3:{trClass='danger1';} break;
+                }
+                str += "<tr class="+trClass+">" +
+                    "<td>" + alertList[i]["time"].substring(0, 19) + "</td>" +
+                    "<td>" + alertList[i]["userName"] + "</td>" +
+                    "<td>" + alertList[i]["facilityIdCode"] + "</td>" +
+                    "<td>" + alertList[i]["concentration"] + "</td>" +
+                    "<td >" + alertList[i]["alarmLevel"] + "</td>" +
+                    "</tr>";
             }
+            $("#alertTableBody").html(str);
         },
         error: function () {
             alert('报警数据加载失败,请检查与主机连接')
@@ -275,9 +286,22 @@ function getNowFormatDate() {
     if (strDate >= 0 && strDate <= 9) {
         strDate = "0" + strDate;
     }
+    var hour = date.getHours();
+    if (hour <= 9) {
+        hour = "0" + hour;
+    }
+    var minute = date.getMinutes();
+    if (minute <= 9) {
+        minute = "0" + minute;
+    }
+    var second = date.getSeconds();
+    if (second <= 9) {
+        second = "0" + second;
+    }
+
     var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
-        + " " + date.getHours() + seperator2 + date.getMinutes()
-        + seperator2 + date.getSeconds();
+        + " " + hour + seperator2 + minute
+        + seperator2 + second;
     return currentdate;
 }
 
@@ -298,12 +322,14 @@ function getMidnight() {
     return currentdate;
 }
 
-////////////////////////////////////
 function gaodemap(center, positionMarkList) {
     map = new AMap.Map('gaodemap', {
         resizeEnable: true,
-        zoom: 20,
+        zoom: 11,
         center: center
+    });
+    map.plugin(["AMap.ToolBar"], function () {
+        map.addControl(new AMap.ToolBar());
     });
     var icon = 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png';
     // 添加一些分布不均的点到地图上,地图上添加三个点标记，作为参照
