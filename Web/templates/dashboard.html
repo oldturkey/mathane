@@ -3,10 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>沼气浓度检测</title>
-    <link href="static/css/bootstrap-select.css" type="text/css" rel="stylesheet"/>
+    <link href="static/css/bootstrap-select.css" type="text/css" rel="stylesheet" />
     <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="static/css/dashboard.css" type="text/css" rel="stylesheet">
     <link href="http://cache.amap.com/lbs/static/main1119.css" rel="stylesheet">
@@ -18,193 +17,324 @@
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="static/js/bootstrap-select.js"></script>
     <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
-    <script src="http://webapi.amap.com/maps?v=1.3&key=f1b425e17e375f9a51e0987f8896562d"></script>
-    <script src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
     <script src="static/js/highcharts.js"></script>
     <script src="static/js/dashboard.js"></script>
     <script src="static/js/try.js"></script>
     <script src="static/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=f1b425e17e375f9a51e0987f8896562d"></script>
+    <script src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
     <style type="text/css">
         html,
         body {
             height: 100%;
             width: 100%;
         }
-
+        
         .highcharts-reset-zoom {
             transform: translate(762px, 0);
         }
-
+        
         table tr td {
             text-align: center;
         }
-
+        
         .navbar-inverse {
             background-color: #3f4146;
+        }
+        
+        #shelter {
+            box-shadow: 0px 3px 5px #888888;
+        }
+        
+        #fixed_table #fix_head {
+            background: #FFFFFF;
+        }
+        
+        #fixed_table {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            table-layout: fixed;
+        }
+        
+        .scroll_table_content {
+            width: 100%;
+            height: 600px;
+            overflow: auto;
         }
 
     </style>
 </head>
 
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <!--响应折叠按钮样式-->
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <!--响应折叠按钮样式-->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a id="brand" class="navbar-brand" herf="/">浙江省沼气安全检测预警系统</a>
-        </div>
-        <!--折叠区域的文字内容-->
-        <div id="navbar" class="navbar-collapse collapse">
-            <div class="nav navbar-right">
-                <label class="navbar-text">欢迎[管理员]</label>
+                <a id="brand" class="navbar-brand" herf="/">浙江省沼气安全检测预警系统</a>
             </div>
-            <div class="navbar-form navbar-right">
-                <div class="form-group">
-                    <input id="timeBegin" type="text" placeholder="开始时间" class="form_datetime form-control">
-                    <input id="timeEnd" type="text" placeholder="结束时间" class="form_datetime form-control">
-                    <button type="submit" class="btn btn-default glyphicon glyphicon-search"
-                            onclick="timeSubmit()"></button>
+            <!--折叠区域的文字内容-->
+            <div id="navbar" class="navbar-collapse collapse">
+                <div class="nav navbar-right">
+                    <label class="navbar-text">欢迎[管理员]</label>
                 </div>
-            </div>
-            <div class="navbar-form navbar-right">
-                <select id="selector" class="selectpicker" onchange="selectChange()">
+                <div class="navbar-form navbar-right">
+                    <div class="form-group">
+                        <input id="timeBegin" type="text" placeholder="开始时间" class="form_datetime form-control">
+                        <input id="timeEnd" type="text" placeholder="结束时间" class="form_datetime form-control">
+                        <button type="submit" class="btn btn-default glyphicon glyphicon-search" onclick="timeSubmit()"></button>
+                    </div>
+                </div>
+                <div class="navbar-form navbar-right">
+                    <select id="selector" class="selectpicker" onchange="selectChange()">
                 </select>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row" id="main">
+            <div class="col-md-1 sidebar">
+                <ul class="nav nav-sidebar">
+                    <div id="home" class="container-fluid">
+                        <a href="/main">
+                            <li>
+                                <span id="home-span" class="glyphicon glyphicon-home"></span>
+                            </li>
+                            <li class="dashboard-text">主页</li>
+                        </a>
+                    </div>
+                    <div id="dashboard" class="container-fluid">
+                        <a href="/dashboard">
+                            <li>
+                                <span id="dashboard-span" class="glyphicon glyphicon-dashboard"></span>
+                            </li>
+                            <li class="dashboard-text">仪表盘</li>
+                        </a>
+                    </div>
+                    <div id="setting" class="container-fluid">
+                        <a href="/setting">
+                            <li>
+                                <span id="setting-span" class="glyphicon glyphicon-cog"></span>
+                            </li>
+                            <li class="setting-text">设置</li>
+                        </a>
+                    </div>
+                    <div id="out" class="container-fluid">
+                        <a href="/login">
+                            <li>
+                                <span id="out-span" class="glyphicon glyphicon-log-out"></span>
+                            </li>
+                            <li class="dashboard-text">退出登录</li>
+                        </a>
+                    </div>
+                </ul>
+            </div>
+            <!--地图显示以及报警信息-->
+            <div id="container-1" class="col-md-5 col-md-offset-1">
+                <div id="gaodemap"></div>
+                <!--报警信息-->
+                <div id="alert-space">
+                    <div class="panel panel-danger">
+                        <div id="alert-header" class="panel-header">报警历史记录</div>
+                        <!--报警内容-->
+                        <div class="panel-body" id="panel-body-table">
+                            <div id="alert-body" class="table-responsive">
+                                <table id="alertTable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr id="table_head" style="background: rgb(129, 138, 152);color: #fff;">
+                                            <td>本地时间</td>
+                                            <td>用户名称</td>
+                                            <td>设备编号</td>
+                                            <td>沼气浓度</td>
+                                            <td>报警等级</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="alertTableBody">
+
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
+                                <div id="test_width"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--显示仪表盘        -->
+            <div id="container-2" class="col-md-6">
+                <div class="panel-body">
+                    <div id="chart"></div>
+                    <div class="mt row-fluid">
+                        <div class="col-md-4 col-sm-4 mb">
+                            <div class="white-panel pn donut-chart">
+                                <div class="white-header">
+                                    <h5 class="pane-text-head">沼气最低浓度：</h5>
+                                    <p id="min" class="pane-low sta">00%</p>
+                                </div>
+                            </div>
+                            <!-- --/grey-panel ---->
+                        </div>
+                        <div class="col-md-4 col-sm-4 mb">
+                            <div class="white-panel pn donut-chart">
+                                <div class="white-header">
+                                    <h5 class="pane-text-head">沼气最高浓度：</h5>
+                                    <p id="max" class="pane-high sta">00%</p>
+                                </div>
+                            </div>
+                            <!-- --/grey-panel ---->
+                        </div>
+                        <div class="col-md-4 col-sm-4 mb">
+                            <div class="white-panel pn donut-chart">
+                                <div class="white-header">
+                                    <h5 class="pane-text-head">沼气平均浓度：</h5>
+                                    <p id="average" class="pane-Aver sta">00%</p>
+                                </div>
+
+                            </div>
+                            <!-- --/grey-panel ---->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</nav>
-<div class="container-fluid">
-    <div class="row" id="main">
-        <div class="col-md-1 sidebar">
-            <ul class="nav nav-sidebar">
-                <div id="home" class="container-fluid">
-                    <a href="/main">
-                        <li>
-                            <span id="home-span" class="glyphicon glyphicon-home"></span>
-                        </li>
-                        <li class="dashboard-text">主页</li>
-                    </a>
-                </div>
-                <div id="dashboard" class="container-fluid">
-                    <a href="/dashboard">
-                        <li>
-                            <span id="dashboard-span" class="glyphicon glyphicon-dashboard"></span>
-                        </li>
-                        <li class="dashboard-text">仪表盘</li>
-                    </a>
-                </div>
-                <div id="setting" class="container-fluid">
-                    <a href="/setting">
-                        <li>
-                            <span id="setting-span" class="glyphicon glyphicon-cog"></span>
-                        </li>
-                        <li class="setting-text">设置</li>
-                    </a>
-                </div>
-                <div id="out" class="container-fluid">
-                    <a href="/login">
-                        <li>
-                            <span id="out-span" class="glyphicon glyphicon-log-out"></span>
-                        </li>
-                        <li class="dashboard-text">退出登录</li>
-                    </a>
-                </div>
-            </ul>
-        </div>
-        <!--地图显示以及报警信息-->
-        <div id="container-1" class="col-md-5 col-md-offset-1">
-            <div id="gaodemap"></div>
-            <!--报警信息-->
-            <div id="alert-space">
-                <div class="panel panel-danger">
-                    <div id="alert-header" class="panel-header">报警历史记录</div>
-                    <!--报警内容-->
-                    <div class="panel-body" id="panel-body-table">
-                        <div id="alert-body" class="table-responsive">
-                            <table id="alertTable" class="table table-bordered table-hover">
-                                <thead>
-                                <tr style="background: rgb(129, 138, 152);color: #fff;">
-                                    <td>本地时间</td>
-                                    <td>用户名称</td>
-                                    <td>设备编号</td>
-                                    <td>沼气浓度</td>
-                                    <td>报警等级</td>
-                                </tr>
-                                </thead>
-                                <tbody id="alertTableBody">
+    <script>
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd hh:00",
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true,
+            showMeridian: true,
+            pickerPosition: "bottom-left",
+            language: 'zh-CN', //中文，需要引用zh-CN.js包
+            startView: 2, //月视图
+            minView: 1 //日期时间选择器所能够提供的最精确的时间选择视图
+        });
+        $(function() {
+            $("#timeBegin").val(getMidnight());
+            $("#timeEnd").val(getNowFormatDate());
+        });
 
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!--显示仪表盘        -->
-        <div id="container-2" class="col-md-6">
-            <div class="panel-body">
-                <div id="chart"></div>
-                <div class="mt row-fluid">
-                    <div class="col-md-4 col-sm-4 mb">
-                        <div class="white-panel pn donut-chart">
-                            <div class="white-header">
-                                <h5 class="pane-text-head">沼气最低浓度：</h5>
-                                <p id="min" class="pane-low sta">00%</p>
-                            </div>
-                        </div>
-                        <!-- --/grey-panel ---->
-                    </div>
-                    <div class="col-md-4 col-sm-4 mb">
-                        <div class="white-panel pn donut-chart">
-                            <div class="white-header">
-                                <h5 class="pane-text-head">沼气最高浓度：</h5>
-                                <p id="max" class="pane-high sta">00%</p>
-                            </div>
-                        </div>
-                        <!-- --/grey-panel ---->
-                    </div>
-                    <div class="col-md-4 col-sm-4 mb">
-                        <div class="white-panel pn donut-chart">
-                            <div class="white-header">
-                                <h5 class="pane-text-head">沼气平均浓度：</h5>
-                                <p id="average" class="pane-Aver sta">00%</p>
-                            </div>
+        function fixScroll() {
+                var sourceTable = $("#alertTable"); //table id
+                var sourceTableHeight = sourceTable.height();
 
-                        </div>
-                        <!-- --/grey-panel ---->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-    $(".form_datetime").datetimepicker({
-        format: "yyyy-mm-dd hh:00",
-        autoclose: true,
-        todayBtn: true,
-        todayHighlight: true,
-        showMeridian: true,
-        pickerPosition: "bottom-left",
-        language: 'zh-CN', //中文，需要引用zh-CN.js包
-        startView: 2, //月视图
-        minView: 1 //日期时间选择器所能够提供的最精确的时间选择视图
-    });
-    $(function () {
-        $("#timeBegin").val(getMidnight());
-        $("#timeEnd").val(getNowFormatDate());
-    });
-</script>
+                var sourceTableHead = $("#table_head"); //table thead tr id
+                var headHeight = sourceTableHead.height(); //table thead tr height
+                var sourceTableWidth = sourceTable.outerWidth(); //get source table width
+                var testDiv = $("#test_width"); //
+                var wrapDiv = $("#alert-body"); //滚动条外层DIV
+                var tempTop = wrapDiv.offset().top - $(window).scrollTop(); //滚动条距离头部div
+                var tempLeft = sourceTableHead.offset().left;
+                //copy table and thead html tag from source table,
+                if($("body #shelter").length==0){
+                    $('body').append('<div id="shelter"><div id="fixed_table_wrap"><table id="fixed_table"  border="0" cellpadding="4" cellspacing="0" class="table table-hover table-bordered"><thead></thead></table></div></div>');
+                }else if($("body #shelter").length==1){
+                    $('div#shelter').remove();
+                   $('body').append('<div id="shelter"><div id="fixed_table_wrap"><table id="fixed_table"  border="0" cellpadding="4" cellspacing="0" class="table table-hover table-bordered"><thead></thead></table></div></div>');
+                }
+  
+                var fixTopDiv = $("#shelter");
+                fixTopDiv.hide();
+                //only set top and left,beacuse i need the top bar can scroll left
+                fixTopDiv.css({
+                    'height': headHeight,
+                    'position': 'fixed',
+                    'top': tempTop + "px",
+                    'left': '0',
+                    'width': testDiv.width() + "px",
+
+                });
+                //set target table width equal source table width
+                $("#fixed_table_wrap,#fixed_table").css({
+                    'width': sourceTableWidth + "px"
+                });
+                $("#fixed_table").offset({
+                    left: tempLeft
+                });
+                //only clone tr html and change thead tr id attr
+                var targetHead = sourceTableHead.clone().attr('id', 'fix_head');
+                targetHead.appendTo('#fixed_table thead');
+                //mark target table thead td width,height equal source table thead td width,height  
+                $("#table_head  td").each(function(index, value) {
+                    var tempWidth = $(value).outerWidth();
+                    var tempHeight = $(value).outerHeight();
+                    $("#fixed_table td").eq(index).css({
+                        'width': tempWidth + "px",
+                        'height': tempHeight + "px",
+                    });
+                });
+
+                //Div中内容滚动
+                wrapDiv.scroll(function() {
+                    //scroll left method
+                    var sl = -Math.max(wrapDiv.scrollLeft(), $('document').scrollLeft());
+                    if (isNaN(sl)) {
+                        sl = -wrapDiv.scrollLeft();
+                    }
+                    fixTopDiv.css("left", sl + 'px');
+                    var scroll_top = wrapDiv.scrollTop() - headHeight + $(window).scrollTop();
+                    tempTop = wrapDiv.offset().top - $(window).scrollTop();
+                    if (tempTop <= 0) {
+                        tempTop = 0;
+                    }
+                    var baseWidth = testDiv.width() + wrapDiv.scrollLeft();
+                    //control  show or hide
+                    if (scroll_top >= 0) {
+                        fixTopDiv.css({
+                            'top': tempTop + "px",
+                            'width': baseWidth + "px"
+                        });
+                        if (!fixTopDiv.is(':visible')) {
+                            fixTopDiv.show();
+                        }
+                    } else {
+                        if (fixTopDiv.is(':visible')) {
+                            fixTopDiv.hide();
+                        }
+
+                    }
+                });
+                //监测浏览器的滚动
+                $(window).on('scroll', function() {
+                    tempTop = wrapDiv.offset().top - $(window).scrollTop();
+                    var scroll_top = wrapDiv.scrollTop() - headHeight + $(window).scrollTop();
+                    var baseWidth = testDiv.width() + wrapDiv.scrollLeft();
+                    if (tempTop <= 0) {
+                        tempTop = 0;
+                    }
+                    fixTopDiv.css({
+                        'top': tempTop + "px",
+                        'width': baseWidth + "px"
+                    });
+                    //control  show or hide
+                    if (scroll_top >= 0) {
+                        if (!fixTopDiv.is(':visible')) {
+                            fixTopDiv.show();
+                        }
+                    } else {
+                        if (fixTopDiv.is(':visible')) {
+                            fixTopDiv.hide();
+                        }
+                    }
+                });
+            }
+        
+
+
+        //
+
+    </script>
 </body>
 
 </html>

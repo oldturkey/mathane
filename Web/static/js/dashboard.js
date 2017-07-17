@@ -5,7 +5,6 @@ var positionMarkList = [];
 var map;//统一的地图全局变量
 var beginTime = getMidnight();
 var endTime = getNowFormatDate();
-
 $(function () {
     //选择器->地图->【图表->统计表盘，受时间选择约束】
     selectInit();
@@ -23,7 +22,7 @@ function selectChange() {
     }
     plotData(selectUserName, beginTime, endTime);
     statistic(selectUserName, beginTime, endTime);
-    alarmtInit(selectUserName, beginTime, endTime);
+    alarmInit(selectUserName, beginTime, endTime);
 }
 
 function timeSubmit() {
@@ -31,9 +30,9 @@ function timeSubmit() {
     beginTime = $("#timeBegin").val() + ':00';
     endTime = $("#timeEnd").val() + ':00';
     var selectUserName = $(".selectpicker").val();
-    plotData(selectUserName, beginTime, endTime);
-    statistic(selectUserName, beginTime, endTime);
-    alarmInit(selectUserName, beginTime, endTime);
+    plotData(selectUserName);
+    statistic(selectUserName);
+    alarmInit(selectUserName);
 }
 //选择器初始化，查询所有用户记录
 function selectInit() {
@@ -48,9 +47,10 @@ function selectInit() {
             }
             selectPickerInit(userList);
             firstUser = userList[0];
-            plotData(firstUser);
-            statistic(firstUser);
-            alarmtInit(firstUser);
+            plotData(firstUser,beginTime,endTime);
+            statistic(firstUser,beginTime,endTime);
+            alarmInit(firstUser,beginTime,endTime);
+        
             var center = jsonList[0]["position"][0];
             for (i = 0; i < jsonList.length; i++) {
                 positionMarkList.push(jsonList[i]["position"]);
@@ -266,6 +266,10 @@ function alarmInit(userName,beginTime,endTime) {
                     "</tr>";
             }
             $("#alertTableBody").html(str);
+            
+                fixScroll();
+            
+            
         },
         error: function () {
             alert('报警数据加载失败,请检查与主机连接')

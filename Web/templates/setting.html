@@ -39,7 +39,7 @@
     }
     
     .form-horizontal .has-feedback .form-control-feedback {
-        right: 35px;
+        right: 41px;
     }
 
 </style>
@@ -139,9 +139,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="facilityRemarks" class="col-md-4 control-label">设备标备注 </label>
+                                    <label for="facilityPosition" class="col-md-4 control-label">设备位置 </label>
                                     <div class="col-md-6">
-                                        <input class="form-control modal-input" type="text" id="facilityRemarks" placeholder="请输入设备备注..." />
+                                        <input class="form-control modal-input" type="text" id="facilityPosition" placeholder="请输入设备位置..." name="facilityPosition" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -163,7 +163,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="facilityLocation" class="col-md-4 control-label">设备位置 </label>
+                                    <label for="facilityLocation" class="col-md-4 control-label">设备地点 </label>
                                     <div class="col-md-6">
                                         <input class="form-control modal-input" type="text" id="facilityLocation" placeholder="请输入设备位置..." name="facilityLocation" />
                                     </div>
@@ -179,7 +179,7 @@
                                 <div class="form-group">
                                     <label for="installTime" class="col-md-4 control-label">安装时间 </label>
                                     <div class="col-md-6">
-                                        <input class="form_datetime form-control modal-input" type="text" name="installTime" value="" size="16" id="installTime" placeholder="点击设置安装时间">
+                                        <input class="form_datetime form-control modal-input" type="date" name="installTime" value="" size="16" id="installTime" placeholder="点击设置安装时间">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -203,8 +203,9 @@
                                 <div class="form-group">
                                     <label for="coordinate" class="col-md-4 control-label">设备坐标 </label>
                                     <div class="col-md-6">
-                                        <input class="form-control modal-input" type="text" id="coordinate" name="coordinate" placeholder="左击地图设备坐标..." />
+                                        <input class="form-control modal-input" type="text" id="coordinate" name="coordinate" placeholder="左击下方地图获取坐标..." />
                                     </div>
+
                                 </div>
                             </div>
                             <div class="col-md-offset-8">
@@ -216,26 +217,7 @@
                     </div>
                     <div class="col-md-12" style="height:370px; padding:5px;">
                         <div id="container"></div>
-                        <div id="myPageTop">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <label>按关键字搜索</label>
-                                    </td>
-                                    <td class="column2">
-                                        <label>左击获取经纬度</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input type="text" placeholder="请输入关键字进行搜索" id="tipinput">
-                                    </td>
-                                    <td class="column2">
-                                        <input type="text" readonly="true" id="lnglat">
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                        <div id="tip" class="tip"></div>
                     </div>
                 </div>
             </div>
@@ -253,7 +235,8 @@
             pickerPosition: "bottom-left",
             language: 'zh-CN', //中文，需要引用zh-CN.js包
             startView: 2, //月视图
-            minView: 2 //日期时间选择器所能够提供的最精确的时间选择视图
+            minView: 4, //日期时间选择器所能够提供的最精确的时间选择视图
+            
         });
         var map = new AMap.Map("container", {
             resizeEnable: true,
@@ -261,20 +244,28 @@
         });
         //为地图注册click事件获取鼠标点击出的经纬度坐标
         var clickEventListener = map.on('click', function(e) {
-            var position = document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat();
-            $('#coordinate').val($.trim(position));
-
+            var position = document.getElementById("coordinate").value = e.lnglat.getLng() + ',' + e.lnglat.getLat();
+            var bootstrapValidator = $("#formAddDevice").data('bootstrapValidator');
+            bootstrapValidator.updateStatus('coordinate', 'NOT_VALIDATED').validateField('coordinate');
         });
         var auto = new AMap.Autocomplete({
-            input: "tipinput"
+            input: "facilityLocation"
         });
         AMap.event.addListener(auto, "select", select); //注册监听，当选中某条记录时会触发
         function select(e) {
             if (e.poi && e.poi.location) {
-                map.setZoom(15);
+                map.setZoom(20);
                 map.setCenter(e.poi.location);
+                var marker = new AMap.Marker({
+                    position: map.getCenter(),
+                    draggable: true,
+                    cursor: 'move',
+                    raiseOnDrag: true
+                });
+                marker.setMap(map);
             }
         }
+
 
         $(function() {
             $('form').bootstrapValidator({
@@ -315,43 +306,43 @@
                                 }
                             }
                         },
-                            firstLevelAlarmContact: {
-                                validators: {
+                        firstLevelAlarmContact: {
+                            validators: {
                                 notEmpty: {
                                     message: '请输入一级报警联系方式'
                                 },
                             }
                         },
-                            secLevelAlarmContact: {
-                                validators: {
+                        secLevelAlarmContact: {
+                            validators: {
                                 notEmpty: {
                                     message: '请输入二报警联系方式'
                                 },
                             }
                         },
-                            thirdLevelAlarmContact: {
-                                validators: {
+                        thirdLevelAlarmContact: {
+                            validators: {
                                 notEmpty: {
                                     message: '请输入三级报警联系方式'
                                 },
                             }
                         },
-                            facilityLocation: {
-                                validators: {
+                        facilityPosition: {
+                            validators: {
                                 notEmpty: {
                                     message: '请输入设备位置'
                                 },
                             }
                         },
-                            facilityIdCode: {
-                                validators: {
+                        facilityIdCode: {
+                            validators: {
                                 notEmpty: {
                                     message: '请输入设备ID'
                                 },
                             }
                         },
-                        }
-                    })
+                    }
+                })
                 .on('success.form.bv', function(e) {
                     // Prevent submit form
                     e.preventDefault();
@@ -359,6 +350,10 @@
                     $("#formAddDevice")[0].reset();
                     $("#formAddDevice").data('bootstrapValidator').resetForm();
                 });
+        });
+        $("#installTime").on("change", function() {
+            var bootstrapValidator = $("#formAddDevice").data('bootstrapValidator');
+            bootstrapValidator.updateStatus('installTime', 'NOT_VALIDATED').validateField('installTime'); //错误提示信息变了  
         });
 
     </script>

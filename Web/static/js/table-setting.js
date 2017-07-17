@@ -159,7 +159,8 @@ function submit_data() {
     var data = {
         userName: $("#userName").val(),  //String，用户名称
         facilityIdCode: $("#facilityIdCode").val(), //String，设备id编号
-        facilityLocation: $("#facilityLocation").val(),//String，设备位置
+//        facilityCity:$("#facilityCity").val(),  //string 设备所在城市
+        facilityLocation: $("#facilityPosition").val(),//String，设备位置
         installTime: $("#installTime").val(),  //String，安装时间
         firstLevelAlarmContact: $("#firstLevelAlarmContact").val(), //String，一级报警联系方式
         firstLevelAlarmThreshold: $("#firstLevelAlarmThreshold").val(), //double，一级报警阈值
@@ -170,7 +171,6 @@ function submit_data() {
         longitude:parseFloat($("#coordinate").val().split(",")[0]),//double，经度
         latitude:parseFloat($("#coordinate").val().split(",")[1])//double, 维度
     };
-
 
     // 数据向后端提交
     $.ajax({
@@ -194,6 +194,5 @@ function submit_data() {
 }
 
 function clean() {
-    $(".modal-input").val("");
     $("#formAddDevice").data('bootstrapValidator').resetForm();
 }
